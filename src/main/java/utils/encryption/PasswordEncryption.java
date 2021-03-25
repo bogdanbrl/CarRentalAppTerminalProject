@@ -22,9 +22,6 @@ public class PasswordEncryption {
     private final int keyLength = 512;
 
     public String encrypt(String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        String salt = "1234";
-        final int iterations = 10000;
-        final int keyLength = 512;
         char[] passwordChar = password.toCharArray();
         byte[] saltBytes = salt.getBytes();
 
