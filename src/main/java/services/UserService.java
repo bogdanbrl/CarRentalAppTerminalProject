@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Bogdan Brl
  * @created 21/03/2021 - 12:10 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class UserService {
 

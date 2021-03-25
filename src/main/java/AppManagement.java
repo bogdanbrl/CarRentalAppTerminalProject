@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * @author Bogdan Brl
  * @created 20/03/2021 - 11:23 AM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class AppManagement {
 

@@ -9,7 +9,7 @@ import persistence.model.UserHistory;
 /**
  * @author Bogdan Brl
  * @created 22/03/2021 - 2:38 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 class UserHistoryServiceTest {
 

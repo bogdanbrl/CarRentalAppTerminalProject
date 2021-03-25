@@ -8,7 +8,7 @@ import javax.persistence.Converter;
 /**
  * @author Double "B"
  * @created 22/03/2021 - 5:27 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 
 @Converter(autoApply = true)

@@ -11,7 +11,7 @@ import java.security.spec.InvalidKeySpecException;
 /**
  * @author Double "B"
  * @created 25/03/2021 - 3:50 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class PasswordEncryption {
 

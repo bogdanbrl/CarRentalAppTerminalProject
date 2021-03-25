@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Bogdan Brl
  * @created 20/03/2021 - 12:41 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 
 @EqualsAndHashCode

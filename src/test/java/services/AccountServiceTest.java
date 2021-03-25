@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Bogdan Brl
  * @created 21/03/2021 - 12:30 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 
 class AccountServiceTest {

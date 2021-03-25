@@ -4,7 +4,7 @@ import java.security.spec.InvalidKeySpecException;
 /**
  * @author Bogdan Brl
  * @created 20/03/2021 - 11:22 AM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class Main {
 

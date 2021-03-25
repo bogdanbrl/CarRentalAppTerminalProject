@@ -19,7 +19,7 @@ import java.util.Scanner;
 /**
  * @author Double "B"
  * @created 23/03/2021 - 6:53 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class CustomerUI {
 

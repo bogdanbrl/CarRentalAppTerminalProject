@@ -14,7 +14,7 @@ import java.util.Scanner;
 /**
  * @author Double "B"
  * @created 22/03/2021 - 8:21 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class Login {
 

@@ -3,7 +3,7 @@ package persistence.model.enums;
 /**
  * @author Double "B"
  * @created 23/03/2021 - 7:30 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class CheckEnums {
 

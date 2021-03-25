@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Double "B"
  * @created 23/03/2021 - 2:12 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class AdministratorService {
 

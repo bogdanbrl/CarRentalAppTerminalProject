@@ -8,7 +8,7 @@ import java.time.LocalDate;
 /**
  * @author Double "B"
  * @created 22/03/2021 - 7:02 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 
 @NoArgsConstructor

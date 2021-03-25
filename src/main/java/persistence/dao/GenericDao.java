@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * @author Bogdan Brl
  * @created 21/03/2021 - 10:29 AM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class GenericDao<T> {
 

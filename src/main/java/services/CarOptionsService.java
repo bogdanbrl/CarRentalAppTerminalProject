@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Double "B"
  * @created 22/03/2021 - 7:35 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class CarOptionsService {
 

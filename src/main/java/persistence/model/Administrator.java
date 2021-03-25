@@ -8,7 +8,7 @@ import javax.persistence.Table;
 /**
  * @author Bogdan Brl
  * @created 22/03/2021 - 2:01 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 
 @NoArgsConstructor

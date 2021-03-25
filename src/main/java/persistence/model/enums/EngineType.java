@@ -3,7 +3,7 @@ package persistence.model.enums;
 /**
  * @author Double "B"
  * @created 22/03/2021 - 4:16 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public enum EngineType {
 

@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 /**
  * @author Double "B"
  * @created 22/03/2021 - 8:46 PM
- * @project CarRentalAppSDAProject
+ * @project CarRentalAppTerminalProject
  */
 public class CarServiceTest {
 
