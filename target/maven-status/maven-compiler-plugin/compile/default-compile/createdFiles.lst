@@ -1,0 +1,9 @@
+persistence\dao\GenericDao.class
+services\UserHistoryService.class
+Main.class
+persistence\model\User.class
+AppManagement.class
+persistence\model\Account.class
+persistence\model\UserHistory.class
+services\UserService.class
+services\AccountService.class
