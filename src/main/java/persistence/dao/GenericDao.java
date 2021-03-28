@@ -63,136 +63,147 @@ public class GenericDao<T> {
     }
 
     public void add(T object) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        session.save(object);
-        transaction.commit();
-        if (session != null) {
-            session.close();
+        Session session = null;
+        Transaction transaction;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.save(object);
+            transaction.commit();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
     public void update(T object) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        session.update(object);
-        transaction.commit();
-
-        if (session != null) {
-            session.close();
+        Transaction transaction;
+        try(Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+            session.update(object);
+            transaction.commit();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
+
     }
 
     public List<T> getAll(T object) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from " + object.getClass().getName());
+        Transaction transaction;
+        List<T> result = null;
+        try(Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("from " + object.getClass().getName());
 
-        List<T> result = query.getResultList();
-        transaction.commit();
-
-        if (session != null) {
-            session.close();
+            result = query.getResultList();
+            transaction.commit();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
-
         return result;
     }
 
     public void delete(T object) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        session.delete(object);
-        transaction.commit();
 
-        if (session != null) {
-            session.close();
+        Transaction transaction;
+
+        try(Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+            session.delete(object);
+            transaction.commit();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
 
     public T findById(T object, String id) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from " + object.getClass().getName() + " where id='" + id + "'");
+
+        Transaction transaction ;
         T result = null;
-        try {
+
+        try(Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("from " + object.getClass().getName() + " where id=:id");
+            query.setParameter("id", id);
             result = (T) query.getSingleResult();
-        } catch (NoResultException e) {
-            e.printStackTrace();
+            transaction.commit();
+        } catch (NoResultException e) { ;
             System.out.println(e.getMessage());
             return null;
-        }
-        transaction.commit();
-
-        if (session != null) {
-            session.close();
         }
         return result;
     }
 
     public T findById(T object, int id) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from " + object.getClass().getName() + " where id='" + id + "'");
+        Transaction transaction ;
         T result = null;
-        try {
+
+        try(Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("from " + object.getClass().getName() + " where id=:id");
+            query.setParameter("id", id);
             result = (T) query.getSingleResult();
-        } catch (NoResultException e) {
-//            e.printStackTrace();
+            transaction.commit();
+        } catch (NoResultException e) { ;
             System.out.println(e.getMessage());
             return null;
-        }
-        transaction.commit();
-
-        if (session != null) {
-            session.close();
         }
         return result;
     }
 
 
     public List<T> findByColumn(T object, String column, String value) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("from " + object.getClass().getName() +
-                " where " + column + " = '" + value + "'");
+        Transaction transaction;
         List<T> result = null;
-        try {
+
+        try(Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("from " + object.getClass().getName() +
+                    " where " + column + " =:value");
+            query.setParameter("value", value);
             result = query.getResultList();
-        } catch (NoResultException e) {
-//            e.printStackTrace();
+            transaction.commit();
+        }catch (Exception e){
             System.out.println(e.getMessage());
-            return null;
         }
         return result;
     }
 
     public List<T> searchByPeriodOrderedByVIN(T object, LocalDate startDate, LocalDate endDate) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("from " + object.getClass().getName() +
-                " where pickupDate>='" + startDate + "' and returnDate<='" + endDate + "' order by 'car_id' asc");
-
+        Transaction transaction;
         List<T> result = null;
-        try {
-            result = query.getResultList();
-        } catch (NoResultException e) {
-            return null;
+
+        try(Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("from " + object.getClass().getName() +
+                    " where pickupDate>=:startDate and returnDate<=:endDate order by 'car_id' asc");
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+            transaction.commit();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
         return result;
     }
 
-    // @Todo need to be rewritten - this deletes by column named firstName
-    public void deleteByColumn(T object, String firstName) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        int result = session.createQuery("delete from " + object.getClass().getName() +
-                " where firstName='" + firstName + "'").executeUpdate();
-        transaction.commit();
+    public void deleteByColumn(T object, String column, String value) {
+
+        Transaction transaction;
+
+        try(Session session = sessionFactory.openSession()){
+            transaction = session.beginTransaction();
+            int result = session.createQuery("delete from " + object.getClass().getName() +
+                    " where " + column + "=:value").setParameter("value", value).executeUpdate();
+            transaction.commit();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
-
-
 }
 
 

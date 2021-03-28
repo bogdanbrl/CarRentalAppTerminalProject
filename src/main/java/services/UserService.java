@@ -43,4 +43,6 @@ public class UserService {
         List<User> users = userGenericDao.getAll(new User());
         return users;
     }
+
+
 }

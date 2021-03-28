@@ -57,4 +57,9 @@ public class CarService {
         List<Car> cars = carServiceGenericDao.getAll(new Car());
         return cars;
     }
+
+    public List<Car> filterCars(String column, String value){
+        List<Car> cars = carServiceGenericDao.findByColumn(new Car(), column, value);
+        return cars;
+    }
 }

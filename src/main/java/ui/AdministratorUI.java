@@ -12,6 +12,8 @@ import utils.GregorianDateMatcher;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -23,6 +25,7 @@ public class AdministratorUI {
 
     private Scanner stringScanner = new Scanner(System.in);
     private Scanner intScanner = new Scanner(System.in);
+    private AdministratorService administratorService = new AdministratorService();
 
     public void showMenu() throws InvalidKeySpecException, NoSuchAlgorithmException {
         System.out.println("Press 1 to add new admin account");
@@ -30,11 +33,12 @@ public class AdministratorUI {
         System.out.println("Press 3 to see all users");
         System.out.println("Press 4 to remove user");
         System.out.println("Press 5 to show all cars from fleet");
-        System.out.println("Press 6 to add car to fleet");
-        System.out.println("Press 7 to delete car from fleet");
-        System.out.println("Press 8 to show history of a car");
-        System.out.println("Press 9 to show rented cars between a given period");
-        System.out.println("Press 10 to logout");
+        System.out.println("Press 6 to filter cars");
+        System.out.println("Press 7 to add car to fleet");
+        System.out.println("Press 8 to delete car from fleet");
+        System.out.println("Press 9 to show history of a car");
+        System.out.println("Press 10 to show rented cars between a given period");
+        System.out.println("Press 11 to logout");
 
 
         while(!intScanner.hasNextInt()){
@@ -43,8 +47,6 @@ public class AdministratorUI {
         }
 
         int choice = intScanner.nextInt();
-
-        AdministratorService administratorService = new AdministratorService();
 
         switch (choice){
             case 1: administratorService.addAdministratorAccount();
@@ -62,21 +64,25 @@ public class AdministratorUI {
             case 5: administratorService.showCarsFromFleet();
                 break;
             case 6:
+                CommonFunctionalitiesUI commonFunctionalitiesUI = new CommonFunctionalitiesUI();
+                commonFunctionalitiesUI.filterOptionChoice();
+                break;
+            case 7:
                 Car car = insertCarDetails();
                 CarOptions carOptions = insertCarOptions();
                 administratorService.addCarToFleet(car, carOptions);
                 break;
-            case 7:
+            case 8:
                 System.out.println("Insert VIN for the car you want to delete from database");
                 String VIN = stringScanner.next();
                 administratorService.deleteCarFromFleet(VIN);
                 break;
-            case 8:
+            case 9:
                 System.out.println("Insert VIN for the whose history you want to check");
                 String VIN2 = stringScanner.next();
                 administratorService.showHistoryOfACar(VIN2);
                 break;
-            case 9:
+            case 10:
                 LocalDate startDate = getStartDate();
                 LocalDate endDate = getEndDate();
                 while (startDate.isAfter(endDate)){
@@ -85,7 +91,7 @@ public class AdministratorUI {
                 }
                 administratorService.searchCarHistoryByPeriod(startDate, endDate);
                 break;
-            case 10: administratorService.logout();
+            case 11: administratorService.logout();
                 break;
             default: showMenu();
         }

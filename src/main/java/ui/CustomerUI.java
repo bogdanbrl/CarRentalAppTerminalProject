@@ -14,6 +14,7 @@ import utils.encryption.PasswordEncryption;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -25,6 +26,7 @@ public class CustomerUI {
 
     private Scanner stringScanner = new Scanner(System.in);
     private Scanner intScanner = new Scanner(System.in);
+    private CustomerService customerService = new CustomerService();
 
     public void showMenu() throws InvalidKeySpecException, NoSuchAlgorithmException {
         System.out.println("Press 1 to change password");
@@ -33,7 +35,8 @@ public class CustomerUI {
         System.out.println("Press 4 to see your history");
         System.out.println("Press 5 to see your current rented or reserved cars");
         System.out.println("Press 6 to rent a car");
-        System.out.println("Press 7 to logout");
+        System.out.println("Press 7 to filter car fleet");
+        System.out.println("Press 8 to logout");
 
         while(!intScanner.hasNextInt()){
             System.out.println("Insert a valid choice");
@@ -41,8 +44,6 @@ public class CustomerUI {
         }
 
         int choice = intScanner.nextInt();
-
-        CustomerService customerService = new CustomerService();
 
         switch (choice){
             case 1:
@@ -76,7 +77,11 @@ public class CustomerUI {
                 }
 
                 break;
-            case 7: customerService.logout();
+            case 7:
+                CommonFunctionalitiesUI commonFunctionalitiesUI = new CommonFunctionalitiesUI();
+                commonFunctionalitiesUI.filterOptionChoice();
+                break;
+            case 8: customerService.logout();
                 break;
             default: showMenu();
         }
