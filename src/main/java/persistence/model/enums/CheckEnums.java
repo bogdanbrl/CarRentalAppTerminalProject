@@ -9,7 +9,7 @@ public class CheckEnums {
 
     public static CarType searchForCarType(String str){
         for (CarType carType : CarType.values()) {
-            if(carType.name().equalsIgnoreCase(str)){
+            if(carType.name().equals(str.toUpperCase())){
                 return carType;
             }
         }
@@ -18,7 +18,7 @@ public class CheckEnums {
 
     public static CarClass searchForCarClass(String str){
         for (CarClass carClass : CarClass.values()) {
-            if(carClass.name().equalsIgnoreCase(str)){
+            if(carClass.name().equals(str.toUpperCase())){
                 return carClass;
             }
         }
@@ -27,7 +27,7 @@ public class CheckEnums {
 
     public static EngineType searchForEngineType(String str){
         for (EngineType engineType : EngineType.values()) {
-            if(engineType.name().equalsIgnoreCase(str)){
+            if(engineType.name().equals(str.toUpperCase())){
                 return engineType;
             }
         }

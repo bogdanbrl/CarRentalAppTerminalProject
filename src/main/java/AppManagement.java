@@ -27,12 +27,16 @@ public class AppManagement {
         loginSession = Login.getInstance();
 
         String choice = showStartMenu();
-        switch (choice){
-            case "1" : loginSession.login();
+        switch (choice) {
+            case "1":
+                loginSession.login();
                 break;
-            case "2" : loginSession.signup();
+            case "2":
+                loginSession.signup();
+                startApp();
                 break;
-            case "3" : System.exit(0);
+            case "3":
+                System.exit(0);
                 break;
             default:
                 System.out.println("This option doesn't exist!");
@@ -41,11 +45,11 @@ public class AppManagement {
 
     }
 
-    private String showStartMenu(){
-        System.out.println("Insert: \n 1 - to login \n 2 - to sign up \n 3 - to exit" );
+    private String showStartMenu() {
+        System.out.println("Insert: \n 1 - to login \n 2 - to sign up \n 3 - to exit");
         String choose = stringScanner.next();
 
-        while (!(choose.equals("1") || choose.equals("2") || choose.equals("3"))){
+        while (!(choose.equals("1") || choose.equals("2") || choose.equals("3"))) {
             System.out.println("Insert a valid option!");
             choose = stringScanner.next();
         }
@@ -54,10 +58,10 @@ public class AppManagement {
     }
 
     public void showMenu() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        if(loginSession.getUserSession() instanceof Administrator){
+        if (loginSession.getUserSession() instanceof Administrator) {
             AdministratorUI administratorUI = new AdministratorUI();
             administratorUI.showMenu();
-        }else if(loginSession.getUserSession() instanceof Customer){
+        } else if (loginSession.getUserSession() instanceof Customer) {
             CustomerUI customerUI = new CustomerUI();
             customerUI.showMenu();
         }

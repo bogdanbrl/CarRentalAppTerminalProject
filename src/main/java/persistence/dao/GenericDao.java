@@ -34,7 +34,7 @@ public class GenericDao<T> {
         properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL57Dialect");
         properties.put(Environment.SHOW_SQL, "true");//
         properties.put(Environment.HBM2DDL_AUTO, "update");
-//        properties.put(Environment.AUTOCOMMIT, false);
+        //properties.put(Environment.AUTOCOMMIT, true);
 
         configuration.setProperties(properties);
 
@@ -63,8 +63,10 @@ public class GenericDao<T> {
     }
 
     public void add(T object) {
+
         Session session = null;
         Transaction transaction;
+
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
@@ -80,7 +82,9 @@ public class GenericDao<T> {
     }
 
     public void update(T object) {
+
         Transaction transaction;
+
         try(Session session = sessionFactory.openSession()){
             transaction = session.beginTransaction();
             session.update(object);
@@ -92,8 +96,10 @@ public class GenericDao<T> {
     }
 
     public List<T> getAll(T object) {
+
         Transaction transaction;
         List<T> result = null;
+
         try(Session session = sessionFactory.openSession()){
             transaction = session.beginTransaction();
             Query query = session.createQuery("from " + object.getClass().getName());
@@ -138,6 +144,7 @@ public class GenericDao<T> {
     }
 
     public T findById(T object, int id) {
+
         Transaction transaction ;
         T result = null;
 
@@ -156,18 +163,15 @@ public class GenericDao<T> {
 
 
     public List<T> findByColumn(T object, String column, String value) {
-
-        Transaction transaction;
         List<T> result = null;
-
-        try(Session session = sessionFactory.openSession()){
-            transaction = session.beginTransaction();
-            Query query = session.createQuery("from " + object.getClass().getName() +
-                    " where " + column + " =:value");
-            query.setParameter("value", value);
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            Query query = session.createQuery("from " + object.getClass().getName() + " where " + column + " = '" + value + "'");
             result = query.getResultList();
             transaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
+            System.out.println("From DAO");
             System.out.println(e.getMessage());
         }
         return result;

@@ -1,6 +1,7 @@
 package ui;
 
 import persistence.model.Car;
+import persistence.model.enums.EngineType;
 import services.CommonFunctionalitiesService;
 
 import java.util.List;
@@ -59,6 +60,7 @@ public class CommonFunctionalitiesUI {
                 break;
             case 2:
                 System.out.println("Insert engine type:");
+
                 String engineType = stringScanner.next().toUpperCase();
 
                 List<Car> cars2 = commonFunctionalitiesService.filterCars("engineType", engineType);
@@ -100,12 +102,14 @@ public class CommonFunctionalitiesUI {
                 double rentPrice = intScanner.nextDouble();
                 List<Car> cars5 = commonFunctionalitiesService.filterCars("rentalPrice", String.valueOf(rentPrice));
                 if (cars5==null || cars5.isEmpty()){
-                    System.out.println("We don't own this car type");
+                    System.out.println("We don't have rent lower than " + rentPrice + " euros.");
                     break;
                 }
                 cars5.forEach(System.out::println);
                 break;
-            default: filterOptionChoice();
+            default:
+                filterOptionChoice();
+                break;
         }
 
 
