@@ -58,8 +58,13 @@ public class CarService {
         return cars;
     }
 
-    public List<Car> filterCars(String column, String value){
-        List<Car> cars = carServiceGenericDao.findByColumn(new Car(), column, value);
-        return cars;
+    public List<Car> filterCars(String column, String value) {
+        List<Car> carsList = carServiceGenericDao.findByColumn(new Car(), column, value);
+        return carsList;
+    }
+
+    public List<Car> filterCarsByRentPricePerDay(String column, String value) {
+        List<Car> carList = carServiceGenericDao.findByColumnLessOrEqualThanValue(new Car(), column, value);
+        return carList;
     }
 }

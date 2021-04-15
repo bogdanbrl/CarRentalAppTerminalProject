@@ -7,7 +7,6 @@ import persistence.model.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

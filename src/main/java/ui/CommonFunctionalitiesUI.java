@@ -1,6 +1,9 @@
 package ui;
 
 import persistence.model.Car;
+import persistence.model.enums.CarClass;
+import persistence.model.enums.CarType;
+import persistence.model.enums.CheckEnums;
 import persistence.model.enums.EngineType;
 import services.CommonFunctionalitiesService;
 
@@ -9,109 +12,119 @@ import java.util.Scanner;
 
 /**
  * @author Double "B"
- * @created 28/03/2021 - 10:09 AM
+ * @created 15/04/2021 - 1:02 PM
  * @project CarRentalAppTerminalProject
  */
+
+
 public class CommonFunctionalitiesUI {
 
-    private Scanner stringScanner = new Scanner(System.in);
-    private Scanner intScanner = new Scanner(System.in);
+    Scanner intScanner = new Scanner(System.in);
+    Scanner stringScanner = new Scanner(System.in);
+    CommonFunctionalitiesService commonFunctionalitiesService = new CommonFunctionalitiesService();
 
     public void filterOptionChoice() {
-        System.out.println("Filter cars by: ");
-        System.out.println("\t 1: brand");
-        System.out.println("\t 2: engine type (GASOLINE,\n" +
-                "    \t\tDIESEL,\n" +
-                "    \t\tHYBRID,\n" +
-                "    \t\tELECTRIC)");
-        System.out.println("\t 3: car class (ECONOMY,\n" +
-                "    \t\tMEDIUM,\n" +
-                "    \t\tLUXURY)");
-        System.out.println("\t 4: car type (SEDAN,\n" +
-                "    \t\tCOUPE,\n" +
-                "    \t\tSPORTS_CAR,\n" +
-                "    \t\tSTATION_WAGON,\n" +
-                "    \t\tHATCHBACK,\n" +
-                "    \t\tCONVERTIBLE,\n" +
-                "    \t\tSPORT_UTILITY_VEHICLE,\n" +
-                "    \t\tMINIVAN,\n" +
-                "    \t\tPICKUP)");
-        System.out.println("\t 5: rent price");
+        System.out.println("\nFilter cars by: \n");
+        System.out.println("press 1 for brand");
+        System.out.println("press 2 for engine type\n\t\tGASOLINE\n\t\tDIESEL\n\t\tHYBRID\n\t\tELECTRIC");
+        System.out.println("press 3 for car class\n\t\tLUXURY\n\t\tMEDIUM\n\t\tECONOMY");
+        System.out.println("press 4 for rent price");
+        System.out.println("press 5 for car type\n\t\tSEDAN, COUPE, SPORTS_CAR\n\t\tSTATION_WAGON, HATCHBACK, CONVERTIBLE\n\t\tSPORT_UTILITY_VEHICLE, " +
+                "MINIVAN, PICKUP");
 
-        while(!intScanner.hasNextInt()){
+        while (!intScanner.hasNextInt()) {
             System.out.println("Insert a valid choice");
             intScanner.next();
         }
 
         int choice = intScanner.nextInt();
-
-        CommonFunctionalitiesService commonFunctionalitiesService = new CommonFunctionalitiesService();
-
-        switch (choice){
+        switch (choice) {
             case 1:
-                System.out.println("Insert brand:");
+                System.out.println("Please type car brand: ");
                 String brand = stringScanner.next();
-                List<Car> cars = commonFunctionalitiesService.filterCars("brand", brand);
-                if (cars==null || cars.isEmpty()){
-                    System.out.println("We don't own this brand");
-                    break;
+                List<Car> carList = commonFunctionalitiesService.filterCars("brand", brand);
+                if (carList.isEmpty()) {
+                    System.out.println("We dont have " + brand + " for rent!");
+                } else {
+                    carList.forEach(System.out::println);
                 }
-                cars.forEach(System.out::println);
                 break;
             case 2:
-                System.out.println("Insert engine type:");
+                System.out.println("Please type the engine type: ");
+                String stringEngineType = stringScanner.next();
+                EngineType engineType = CheckEnums.searchForEngineType(stringEngineType);
 
-                String engineType = stringScanner.next().toUpperCase();
-
-                List<Car> cars2 = commonFunctionalitiesService.filterCars("engineType", engineType);
-                if (cars2==null || cars2.isEmpty()){
-                    System.out.println("We don't own this engine type");
-                    break;
+                while (engineType == null) {
+                    System.out.println("Insert a valid engine type");
+                    stringEngineType = stringScanner.next();
+                    engineType = CheckEnums.searchForEngineType(stringEngineType);
                 }
-                cars2.forEach(System.out::println);
+
+                List<Car> carList1 = commonFunctionalitiesService.filterCars("engineType", stringEngineType);
+
+                if (carList1.isEmpty()) {
+                    System.out.println("Please type a valid engine type!");
+                } else {
+                    carList1.forEach(System.out::println);
+                }
                 break;
             case 3:
-                System.out.println("Insert car class:");
-                String carClass = stringScanner.next().toUpperCase();
+                System.out.println("Please type the car class");
+                String stringCarClass = stringScanner.next();
+                CarClass carClass = CheckEnums.searchForCarClass(stringCarClass);
 
-                List<Car> cars3 = commonFunctionalitiesService.filterCars("carClass", carClass);
-                if (cars3==null || cars3.isEmpty()){
-                    System.out.println("We don't own this car class");
-                    break;
+                while (carClass == null) {
+                    System.out.println("Insert a valid car class");
+                    stringCarClass = stringScanner.next();
+                    carClass = CheckEnums.searchForCarClass(stringCarClass);
                 }
-                cars3.forEach(System.out::println);
+
+                List<Car> carList2 = commonFunctionalitiesService.filterCars("carClass", stringCarClass);
+
+                if (carList2.isEmpty()) {
+                    System.out.println("Please type a valid car class");
+                } else {
+                    carList2.forEach(System.out::println);
+                }
                 break;
             case 4:
-                System.out.println("Insert car type:");
-                String carType = stringScanner.next().toUpperCase();
+                System.out.println("Please insert the max rent price per day");
 
-                List<Car> cars4 = commonFunctionalitiesService.filterCars("carType", carType);
-                if (cars4==null || cars4.isEmpty()){
-                    System.out.println("We don't own this car type");
-                    break;
-                }
-                cars4.forEach(System.out::println);
-                break;
-            case 5:
-                System.out.println("Insert maximum rent price");
-
-                while (!intScanner.hasNextDouble()){
-                    System.out.println("This is not a valid price. Insert maximum price");
+                while (!intScanner.hasNextDouble()) {
+                    System.out.println("Insert a valid price");
                     intScanner.next();
                 }
                 double rentPrice = intScanner.nextDouble();
-                List<Car> cars5 = commonFunctionalitiesService.filterCars("rentalPrice", String.valueOf(rentPrice));
-                if (cars5==null || cars5.isEmpty()){
-                    System.out.println("We don't have rent lower than " + rentPrice + " euros.");
-                    break;
+
+                List<Car> carList3 = commonFunctionalitiesService.filterCarsLessOrEqualToValue("rentalPrice", String.valueOf(rentPrice));
+                if (carList3.isEmpty()) {
+                    System.out.println("We dont have cars for rent with " + rentPrice + " per day!");
+                } else {
+                    carList3.forEach(System.out::println);
                 }
-                cars5.forEach(System.out::println);
+                break;
+            case 5:
+                System.out.println("Please insert car type:");
+                String stringCarType = stringScanner.next();
+                CarType carType = CheckEnums.searchForCarType(stringCarType);
+
+                while (carType == null) {
+                    System.out.println("Insert a valid car type");
+                    stringCarType = stringScanner.next();
+                    carType = CheckEnums.searchForCarType(stringCarType);
+                }
+
+                List<Car> carList4 = commonFunctionalitiesService.filterCars("carType", stringCarType);
+
+                if (carList4.isEmpty()) {
+                    System.out.println("Please type a valid car type");
+                } else {
+                    carList4.forEach(System.out::println);
+                }
                 break;
             default:
                 filterOptionChoice();
                 break;
         }
-
-
     }
 }

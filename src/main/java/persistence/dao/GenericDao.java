@@ -34,7 +34,7 @@ public class GenericDao<T> {
         properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL57Dialect");
         properties.put(Environment.SHOW_SQL, "true");//
         properties.put(Environment.HBM2DDL_AUTO, "update");
-        //properties.put(Environment.AUTOCOMMIT, true);
+//        properties.put(Environment.AUTOCOMMIT, false);
 
         configuration.setProperties(properties);
 
@@ -63,18 +63,16 @@ public class GenericDao<T> {
     }
 
     public void add(T object) {
-
         Session session = null;
         Transaction transaction;
-
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(object);
             transaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-        }finally {
+        } finally {
             if (session != null) {
                 session.close();
             }
@@ -82,87 +80,105 @@ public class GenericDao<T> {
     }
 
     public void update(T object) {
-
         Transaction transaction;
-
-        try(Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.update(object);
             transaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     public List<T> getAll(T object) {
-
+        Session session = null;
         Transaction transaction;
         List<T> result = null;
-
-        try(Session session = sessionFactory.openSession()){
+        try {
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             Query query = session.createQuery("from " + object.getClass().getName());
 
             result = query.getResultList();
             transaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
         return result;
     }
 
     public void delete(T object) {
-
         Transaction transaction;
-
-        try(Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.delete(object);
             transaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
     public T findById(T object, String id) {
 
-        Transaction transaction ;
-        T result = null;
+        T result;
 
-        try(Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
             Query query = session.createQuery("from " + object.getClass().getName() + " where id=:id");
             query.setParameter("id", id);
             result = (T) query.getSingleResult();
             transaction.commit();
-        } catch (NoResultException e) { ;
+        } catch (NoResultException e) {
+
             System.out.println(e.getMessage());
             return null;
         }
+
         return result;
     }
 
     public T findById(T object, int id) {
 
-        Transaction transaction ;
-        T result = null;
+        T result;
 
-        try(Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
             Query query = session.createQuery("from " + object.getClass().getName() + " where id=:id");
             query.setParameter("id", id);
             result = (T) query.getSingleResult();
             transaction.commit();
-        } catch (NoResultException e) { ;
+        } catch (NoResultException e) {
+
             System.out.println(e.getMessage());
             return null;
         }
+
+        return result;
+    }
+
+    public List<T> findByColumnLessOrEqualThanValue(T object, String column, String value) {
+
+        List<T> result = null;
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            Query query = session.createQuery("from " + object.getClass().getName() + " where " + column + " <= '" + value + "'");
+            result = query.getResultList();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         return result;
     }
 
 
     public List<T> findByColumn(T object, String column, String value) {
+
         List<T> result = null;
         try {
             Session session = sessionFactory.openSession();
@@ -171,45 +187,70 @@ public class GenericDao<T> {
             result = query.getResultList();
             transaction.commit();
         } catch (Exception e) {
-            System.out.println("From DAO");
             System.out.println(e.getMessage());
         }
+
         return result;
     }
 
+//    public List<T> findByColumn(T object, String column, String value) {
+//
+//        List<T> result = null;
+//
+//        try (Session session = sessionFactory.openSession()) {
+//
+//            Transaction transaction = session.beginTransaction();
+//            Query query = session.createQuery("from " + object.getClass().getName() + " where " + column + "=:value");
+//
+//            // from Car where carClass=ECONOMY
+//            query.setParameter("value", value);
+//            result =query.getResultList();
+//            transaction.commit();
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return null;
+//        }
+//
+//        return result;
+//    }
+
     public List<T> searchByPeriodOrderedByVIN(T object, LocalDate startDate, LocalDate endDate) {
 
-        Transaction transaction;
-        List<T> result = null;
+        List<T> result;
 
-        try(Session session = sessionFactory.openSession()){
-            transaction = session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+
             Query query = session.createQuery("from " + object.getClass().getName() +
                     " where pickupDate>=:startDate and returnDate<=:endDate order by 'car_id' asc");
             query.setParameter("startDate", startDate);
             query.setParameter("endDate", endDate);
+
+            result = query.getResultList();
             transaction.commit();
-        }catch (Exception e){
+        } catch (NoResultException e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return result;
     }
 
     public void deleteByColumn(T object, String column, String value) {
 
-        Transaction transaction;
-
-        try(Session session = sessionFactory.openSession()){
-            transaction = session.beginTransaction();
-            int result = session.createQuery("delete from " + object.getClass().getName() +
-                    " where " + column + "=:value").setParameter("value", value).executeUpdate();
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Query query = session.createQuery("delete from " + object.getClass().getName() + " where " + column + "=:value");
+            query.setParameter("value", value);
+            query.executeUpdate();
             transaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-}
 
+    }
+
+
+}
 
 
 

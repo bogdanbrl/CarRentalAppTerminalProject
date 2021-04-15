@@ -12,8 +12,6 @@ import utils.GregorianDateMatcher;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -25,7 +23,6 @@ public class AdministratorUI {
 
     private Scanner stringScanner = new Scanner(System.in);
     private Scanner intScanner = new Scanner(System.in);
-    private AdministratorService administratorService = new AdministratorService();
 
     public void showMenu() throws InvalidKeySpecException, NoSuchAlgorithmException {
         System.out.println("Press 1 to add new admin account");
@@ -33,7 +30,7 @@ public class AdministratorUI {
         System.out.println("Press 3 to see all users");
         System.out.println("Press 4 to remove user");
         System.out.println("Press 5 to show all cars from fleet");
-        System.out.println("Press 6 to filter cars");
+        System.out.println("Press 6 to filter cars from fleet");
         System.out.println("Press 7 to add car to fleet");
         System.out.println("Press 8 to delete car from fleet");
         System.out.println("Press 9 to show history of a car");
@@ -48,22 +45,28 @@ public class AdministratorUI {
 
         int choice = intScanner.nextInt();
 
-        switch (choice){
-            case 1: administratorService.addAdministratorAccount();
+        AdministratorService administratorService = new AdministratorService();
+
+        switch (choice) {
+            case 1:
+                administratorService.addAdministratorAccount();
                 break;
             case 2: // @Todo administratorService.changePassword();
                 System.out.println("This feature is not available yet. Come back later!");
                 break;
-            case 3: administratorService.showUsers();
+            case 3:
+                administratorService.showUsers();
                 break;
             case 4:
                 System.out.println("Insert username that you want to delete: ");
                 String username = stringScanner.next();
                 administratorService.removeUser(username);
                 break;
-            case 5: administratorService.showCarsFromFleet();
+            case 5:
+                administratorService.showCarsFromFleet();
                 break;
             case 6:
+                System.out.println("Choose your option: ");
                 CommonFunctionalitiesUI commonFunctionalitiesUI = new CommonFunctionalitiesUI();
                 commonFunctionalitiesUI.filterOptionChoice();
                 break;
@@ -85,17 +88,18 @@ public class AdministratorUI {
             case 10:
                 LocalDate startDate = getStartDate();
                 LocalDate endDate = getEndDate();
-                while (startDate.isAfter(endDate)){
+                while (startDate.isAfter(endDate)) {
                     System.out.println("End date cannot be before start date");
-                    endDate=getEndDate();
+                    endDate = getEndDate();
                 }
                 administratorService.searchCarHistoryByPeriod(startDate, endDate);
                 break;
-            case 11: administratorService.logout();
+            case 11:
+                administratorService.logout();
                 break;
-            default: showMenu();
+            default:
+                showMenu();
         }
-
     }
 
     private LocalDate getEndDate() {

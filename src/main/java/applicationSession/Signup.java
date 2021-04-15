@@ -50,12 +50,12 @@ public class Signup {
         UserService userService = new UserService();
         User u = userService.findById(new User(), username);
 
-        boolean isNotAvailable = (u != null) ? true : false;
-        while(isNotAvailable==true){
+        boolean isNotAvailable = u != null;
+        while(isNotAvailable){
             System.out.println("Username already taken! Insert a new username: ");
             username = scanner.next();
             u = userService.findById(new User(), username);
-            isNotAvailable = (u != null) ? true : false;
+            isNotAvailable = u != null;
         }
 
         System.out.println("Insert password: ");
